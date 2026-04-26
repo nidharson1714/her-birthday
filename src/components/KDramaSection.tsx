@@ -178,62 +178,7 @@ export function KDramaSection() {
 
   }, { scope: containerRef })
 
-  // ── MOBILE STACKING CARDS LOGIC ──
-  useGSAP(() => {
-    if (window.innerWidth >= 1024) return; // Use LG breakpoint for mobile logic
-
-    const mobileCards = gsap.utils.toArray<HTMLElement>('.mobile-video-card');
-    
-    mobileCards.forEach((card, i) => {
-      const video = card.querySelector('video');
-      const content = card.querySelector('.mobile-card-content');
-
-      gsap.fromTo(card, 
-        { y: '50%', opacity: 0, scale: 0.8 },
-        {
-          y: '0%',
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 90%',
-            end: 'top 20%',
-            scrub: true,
-            onEnter: () => {
-              if (video) {
-                video.muted = false;
-                video.play().catch(() => {});
-              }
-            },
-            onLeaveBack: () => {
-              if (video) {
-                video.muted = true;
-                video.pause();
-              }
-            }
-          }
-        }
-      );
-
-      if (content) {
-        gsap.fromTo(content,
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 60%',
-              toggleActions: 'play none none reverse'
-            }
-          }
-        );
-      }
-    });
-  }, { scope: containerRef });
+  }, { scope: containerRef })
 
   // ── Mouse Parallax Detail ──
   const onMouseMove = (e: React.MouseEvent) => {
@@ -259,7 +204,7 @@ export function KDramaSection() {
     >
       <div className="absolute inset-0 pointer-events-none bg-radial-gradient from-teal-950/10 to-black" />
 
-      <div className="kdrama-header-content text-center px-6 pt-20 sm:pt-12 pb-10 z-20 sticky top-0 bg-gradient-to-b from-[#050a0a] to-transparent w-full">
+      <div className="kdrama-header-content text-center px-6 absolute top-8 sm:top-12 left-0 right-0 z-20">
         <span className="font-label text-[9px] sm:text-[10px] tracking-[0.4em] sm:tracking-[0.5em] uppercase text-rose/40 mb-2 sm:mb-3 block">
           A Recommendation That Changed Things
         </span>
@@ -268,73 +213,52 @@ export function KDramaSection() {
         </h2>
       </div>
 
-      {/* ── DESKTOP HORIZONTAL SCROLL ── */}
-      <div className="hidden lg:flex relative w-full h-screen items-center">
+      <div className="relative w-full h-[80vh] flex items-center">
         <div 
           ref={horizontalRef}
-          className="flex flex-nowrap items-center h-full px-[35vw] will-change-transform transform-gpu"
+          className="flex flex-nowrap items-center h-full px-[15vw] sm:px-[35vw] will-change-transform transform-gpu"
         >
           {videos.map((video, idx) => (
             <div 
               key={video.id} 
-              className="video-card flex-shrink-0 w-[50vw] px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
+              className="video-card flex-shrink-0 w-[90vw] sm:w-[50vw] px-4 sm:px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
             >
-              <div className="video-card-inner relative group overflow-hidden rounded-[3rem] bg-black/60 shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30 transform-gpu">
+              <div className="video-card-inner relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30 transform-gpu">
                 <video 
                   ref={el => videoRefs.current[idx] = el}
                   src={video.src}
                   className="w-full aspect-video object-cover"
                   autoPlay muted loop playsInline
                 />
-                <div className="absolute top-8 left-10 font-label text-[10px] tracking-[0.4em] uppercase text-white/40">Scene 0{idx + 1}</div>
-                <div className="visualizer opacity-0 scale-50 absolute bottom-8 right-10 flex gap-1.5 items-end h-6">
-                  <div className="w-1.5 h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
-                  <div className="w-1.5 h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-1.5 h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
+                <div className="absolute top-6 left-6 sm:top-8 sm:left-10 font-label text-[9px] sm:text-[10px] tracking-[0.4em] uppercase text-white/40">Scene 0{idx + 1}</div>
+                <div className="visualizer opacity-0 scale-50 absolute bottom-6 right-6 sm:bottom-8 sm:right-10 flex gap-1 sm:gap-1.5 items-end h-4 sm:h-6">
+                  <div className="w-1 h-3 sm:w-1.5 sm:h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
+                  <div className="w-1 h-4 sm:w-1.5 sm:h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="w-1 h-2 sm:w-1.5 sm:h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
                 </div>
               </div>
-              <div className="absolute top-full left-0 right-0 mt-6 text-center px-12 pointer-events-none">
+
+              {/* Message Placement - Always visible on mobile */}
+              <div className="absolute top-[105%] left-0 right-0 text-center px-4 sm:px-12 pointer-events-none">
                 {video.message && (
-                  <div className="font-headline italic text-2xl lg:text-3xl text-parchment/80 leading-relaxed flex flex-wrap justify-center gap-x-2">
+                  <div className="font-headline italic text-lg sm:text-2xl lg:text-3xl text-parchment/80 leading-relaxed drop-shadow-2xl flex flex-wrap justify-center gap-x-2">
                     {video.message.split(' ').map((word, wIdx) => (
-                      <span key={wIdx} className="msg-word inline-block opacity-0">{word}</span>
+                      <span key={wIdx} className="msg-word inline-block opacity-0">
+                        {word}
+                      </span>
                     ))}
                   </div>
                 )}
               </div>
             </div>
           ))}
-          <div className="flex-shrink-0 w-[40vw] flex flex-col items-center justify-center text-center px-10">
+          
+          <div className="flex-shrink-0 w-[50vw] flex flex-col items-center justify-center text-center px-10">
             <div className="w-16 h-[1px] bg-rose/20 mb-12" />
-            <p className="font-body text-parchment/30 text-base italic max-w-xs">"Wait for the one who speaks your language without saying a single word."</p>
+            <p className="font-body text-parchment/30 text-base italic leading-relaxed max-w-xs">
+              "Wait for the one who speaks your language without saying a single word."
+            </p>
           </div>
-        </div>
-      </div>
-
-      {/* ── MOBILE STACKING LIST ── */}
-      <div className="lg:hidden flex flex-col gap-40 w-full px-6 pb-60">
-        {videos.map((video, idx) => (
-          <div key={video.id} className="mobile-video-card flex flex-col gap-8 opacity-0 transform-gpu">
-            <div className="relative overflow-hidden rounded-[2.5rem] bg-black/40 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
-              <video 
-                src={video.src}
-                className="w-full aspect-video object-cover"
-                autoPlay muted loop playsInline
-              />
-              <div className="absolute top-5 left-6 font-label text-[10px] tracking-[0.3em] uppercase text-white/50 bg-black/40 px-3 py-1 rounded-full backdrop-blur-md">Scene 0{idx + 1}</div>
-            </div>
-            {video.message && (
-              <div className="mobile-card-content text-center px-4">
-                <p className="font-headline italic text-2xl text-parchment leading-relaxed drop-shadow-lg">
-                   {video.message}
-                </p>
-              </div>
-            )}
-          </div>
-        ))}
-        <div className="py-20 flex flex-col items-center text-center">
-           <div className="w-10 h-[1px] bg-rose/20 mb-8" />
-           <p className="font-body text-parchment/20 text-xs italic">"Wait for the one who speaks your language without saying a single word."</p>
         </div>
       </div>
     </section>
