@@ -47,14 +47,14 @@ export function KDramaSection() {
 
     // ── Floating/Levitation Animation ──
     // Only run on non-mobile or reduce intensity to save CPU
+    // ── Floating/Levitation Animation for all cards ──
     cards.forEach((card, i) => {
        gsap.to(card, {
-          y: i % 2 === 0 ? -10 : 10,
+          y: i % 2 === 0 ? -15 : 15,
           duration: 3 + i * 0.5,
           repeat: -1,
           yoyo: true,
-          ease: 'sine.inOut',
-          paused: window.innerWidth < 768 // Disable constant floating on mobile for better FPS
+          ease: 'sine.inOut'
        })
     })
 
@@ -65,9 +65,9 @@ export function KDramaSection() {
       scrollTrigger: {
         trigger: containerRef.current,
         pin: true,
-        scrub: window.innerWidth < 768 ? 0.6 : 1.2, // Faster scrub on mobile for responsiveness
+        scrub: 1.5,
         start: 'top top',
-        end: () => `+=${getScrollAmount() + (window.innerWidth < 768 ? 500 : 1000)}`, // Shorter scroll on mobile
+        end: () => `+=${getScrollAmount() + 1000}`, // Dynamic end
         invalidateOnRefresh: true,
         onEnter: () => {
           window.dispatchEvent(new CustomEvent('pause-bgm'))
