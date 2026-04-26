@@ -66,12 +66,17 @@ export function KDramaSection() {
         trigger: containerRef.current,
         pin: true,
         scrub: 1.5,
+        snap: window.innerWidth < 768 ? {
+          snapTo: 1 / (videos.length - 1),
+          duration: { min: 0.2, max: 0.5 },
+          delay: 0.1,
+          ease: 'power1.inOut'
+        } : null,
         start: 'top top',
-        end: () => `+=${getScrollAmount() + 1000}`, // Dynamic end
+        end: () => `+=${getScrollAmount() + (window.innerWidth < 768 ? 600 : 1000)}`, // Reduced distance for mobile
         invalidateOnRefresh: true,
         onEnter: () => {
           window.dispatchEvent(new CustomEvent('pause-bgm'))
-          // Force a refresh to ensure scrollWidth is correct
           ScrollTrigger.refresh()
         },
         onEnterBack: () => window.dispatchEvent(new CustomEvent('pause-bgm')),
