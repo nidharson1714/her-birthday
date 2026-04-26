@@ -71,7 +71,7 @@ export function KDramaSection() {
           duration: { min: 0.2, max: 0.5 },
           delay: 0.1,
           ease: 'power1.inOut'
-        } : null,
+        } : undefined,
         start: 'top top',
         end: () => `+=${getScrollAmount() + (window.innerWidth < 768 ? 600 : 1000)}`, // Reduced distance for mobile
         invalidateOnRefresh: true,

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Lenis from '@studio-freight/lenis'
+import Lenis from 'lenis'
 import { HeroSection } from './components/HeroSection'
 import { VideoBackground } from './components/VideoBackground'
 import { ProfileSection } from './components/ProfileSection'
