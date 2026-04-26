@@ -1,0 +1,275 @@
+import { useRef, useEffect } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useGSAP } from '@gsap/react'
+
+gsap.registerPlugin(ScrollTrigger)
+
+interface VideoData {
+  src: string;
+  message?: string;
+  id: string;
+}
+
+const videos: VideoData[] = [
+  { id: '1', src: '/video2/video_1.mp4', message: 'Harini enaku unna unmaive antha white coat ah stethoscope potu en munnadi nee varu podhu achoo!!' },
+  { id: '2', src: '/video2/video_2.mp4' },
+  { id: '3', src: '/video2/video_3.mp4', message: 'en harini epo ketalum even kekalanalum naa unnakaga cook pannuve papuh! only for my papuh!' },
+  { id: '4', src: '/video2/scene5.mp4', message: 'orey vatti matu pls last chance ah' },
+  { id: '5', src: '/video2/video_5.mp4' },
+  { id: '6', src: '/video2/video_6.mp4', message: 'naa unakaga eppovu wait pannuve evlw years aanalum wait pannuve nee vara varaiku wait pannuve en harini kaga' },
+  { id: '7', src: '/video2/video_7.mp4', message: 'i will never forgot those eyes in my life! i love you harini' },
+  { id: '8', src: '/video2/3d4c73b8-d766-4ff7-a4b9-213cd0a81456_1.mp4' }
+]
+
+export function KDramaSection() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const horizontalRef = useRef<HTMLDivElement>(null)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
+
+  useGSAP(() => {
+    if (!horizontalRef.current || !containerRef.current) return;
+
+    // ── INITIAL STATE: Ensure all videos are muted ──
+    videoRefs.current.forEach(v => {
+      if (v) {
+        v.muted = true;
+      }
+    });
+
+    const cards = gsap.utils.toArray<HTMLElement>('.video-card')
+    
+    // Function to calculate the actual scroll amount
+    const getScrollAmount = () => {
+      if (!horizontalRef.current) return 0;
+      return horizontalRef.current.scrollWidth - window.innerWidth;
+    }
+
+    // ── Floating/Levitation Animation for all cards ──
+    cards.forEach((card, i) => {
+       gsap.to(card, {
+          y: i % 2 === 0 ? -15 : 15,
+          duration: 3 + i * 0.5,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+       })
+    })
+
+    // ── Master Horizontal Scroll ──
+    const horizontalScroll = gsap.to(horizontalRef.current, {
+      x: () => -getScrollAmount(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        pin: true,
+        scrub: 1.5,
+        start: 'top top',
+        end: () => `+=${getScrollAmount() + 1000}`, // Dynamic end
+        invalidateOnRefresh: true,
+        onEnter: () => {
+          window.dispatchEvent(new CustomEvent('pause-bgm'))
+          // Force a refresh to ensure scrollWidth is correct
+          ScrollTrigger.refresh()
+        },
+        onEnterBack: () => window.dispatchEvent(new CustomEvent('pause-bgm')),
+        onLeave: () => {
+          window.dispatchEvent(new CustomEvent('resume-bgm'))
+          videoRefs.current.forEach(v => { if(v) { v.muted = true; v.pause(); } })
+        },
+        onLeaveBack: () => {
+          window.dispatchEvent(new CustomEvent('resume-bgm'))
+          videoRefs.current.forEach(v => { if(v) { v.muted = true; v.pause(); } })
+        }
+      }
+    })
+
+    // ── Individual Card Logic (Focus & Audio) ──
+    cards.forEach((card, i) => {
+      const video = videoRefs.current[i]
+      const msgWords = card.querySelectorAll('.msg-word')
+      const visualizer = card.querySelector('.visualizer')
+
+      ScrollTrigger.create({
+        trigger: card,
+        containerAnimation: horizontalScroll,
+        start: 'left center+=15%',
+        end: 'right center-=15%',
+        onEnter: () => {
+          videoRefs.current.forEach((v, idx) => {
+            if (v) {
+              if (idx === i) {
+                v.muted = false;
+                v.play().catch(() => {});
+              } else {
+                v.muted = true;
+              }
+            }
+          });
+
+          gsap.to(card, { scale: 1.1, opacity: 1, duration: 0.8, ease: 'power3.out' })
+          if (visualizer) gsap.to(visualizer, { opacity: 1, scale: 1, duration: 0.5 })
+          
+          if (msgWords.length > 0) {
+            gsap.to(msgWords, {
+              opacity: 1,
+              duration: 0.8,
+              stagger: 0.03,
+              ease: 'power2.out'
+            })
+          }
+        },
+        onLeave: () => {
+          gsap.to(card, { scale: 0.85, opacity: 0.2, duration: 0.8 })
+          if (visualizer) gsap.to(visualizer, { opacity: 0, scale: 0.5, duration: 0.3 })
+          if (video) video.muted = true
+          if (msgWords.length > 0) {
+            gsap.to(msgWords, { opacity: 0, duration: 0.4 })
+          }
+        },
+        onEnterBack: () => {
+          videoRefs.current.forEach((v, idx) => {
+            if (v) {
+              if (idx === i) {
+                v.muted = false;
+                v.play().catch(() => {});
+              } else {
+                v.muted = true;
+              }
+            }
+          });
+
+          gsap.to(card, { scale: 1.1, opacity: 1, duration: 0.8, ease: 'power3.out' })
+          if (visualizer) gsap.to(visualizer, { opacity: 1, scale: 1, duration: 0.5 })
+          if (msgWords.length > 0) {
+            gsap.to(msgWords, { opacity: 1, stagger: 0.03, duration: 0.8, ease: 'power2.out' })
+          }
+        },
+        onLeaveBack: () => {
+          gsap.to(card, { scale: 0.85, opacity: 0.2, duration: 0.8 })
+          if (visualizer) gsap.to(visualizer, { opacity: 0, scale: 0.5, duration: 0.3 })
+          if (video) video.muted = true
+          if (msgWords.length > 0) {
+            gsap.to(msgWords, { opacity: 0, duration: 0.4 })
+          }
+        }
+      })
+    })
+
+    // Header reveal
+    gsap.from('.kdrama-header-content', {
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top bottom',
+        end: 'top top',
+        scrub: true
+      },
+      y: 100,
+      opacity: 0,
+      scale: 0.9,
+    })
+
+  }, { scope: containerRef })
+
+  // ── Mouse Parallax Detail ──
+  const onMouseMove = (e: React.MouseEvent) => {
+     if (!containerRef.current) return;
+     const { clientX, clientY } = e;
+     const xPos = (clientX / window.innerWidth - 0.5) * 30;
+     const yPos = (clientY / window.innerHeight - 0.5) * 30;
+     
+     gsap.to('.video-card-inner', {
+        x: xPos,
+        y: yPos,
+        duration: 2,
+        ease: 'power2.out',
+        overwrite: 'auto'
+     })
+  }
+
+  return (
+    <section 
+      ref={containerRef} 
+      onMouseMove={onMouseMove}
+      className="relative z-20 w-full h-screen bg-[#050a0a] overflow-hidden flex flex-col justify-center"
+    >
+      <div className="absolute inset-0 pointer-events-none bg-radial-gradient from-teal-950/10 to-black" />
+
+      <div className="kdrama-header-content text-center px-6 absolute top-12 left-0 right-0 z-20">
+        <span className="font-label text-[10px] tracking-[0.5em] uppercase text-rose/40 mb-3 block">
+          A Recommendation That Changed Things
+        </span>
+        <h2 className="font-headline text-4xl sm:text-6xl text-parchment italic tracking-tight">
+          The <span className="text-rose">Unspoken</span> Language
+        </h2>
+      </div>
+
+      <div className="relative w-full h-[75vh] flex items-center">
+        <div 
+          ref={horizontalRef}
+          className="flex flex-nowrap items-center h-full px-[10vw] md:px-[35vw]"
+        >
+          {videos.map((video, idx) => (
+            <div 
+              key={video.id} 
+              className="video-card flex-shrink-0 w-[85vw] sm:w-[65vw] lg:w-[50vw] px-12 opacity-20 relative perspective-2000"
+            >
+              <div className="video-card-inner relative group overflow-hidden rounded-[3rem] bg-black/60 shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30">
+                
+                {/* Video */}
+                <video 
+                  ref={el => videoRefs.current[idx] = el}
+                  src={video.src}
+                  className="w-full aspect-video object-cover opacity-100 group-hover:opacity-100 transition-opacity duration-1000"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+                
+                {/* Glass Shimmer Overlay */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[2000ms] ease-in-out" />
+
+                <div className="absolute top-8 left-10 font-label text-[10px] tracking-[0.4em] uppercase text-white/40 drop-shadow-md">
+                  Scene 0{idx + 1}
+                </div>
+
+                <div className="visualizer opacity-0 scale-50 absolute bottom-8 right-10 flex gap-1.5 items-end h-6">
+                  <div className="w-1.5 h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
+                  <div className="w-1.5 h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="w-1.5 h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
+                </div>
+              </div>
+
+              {/* Message */}
+              <div className="absolute top-full left-0 right-0 mt-6 text-center px-12 pointer-events-none">
+                {video.message && (
+                  <div className="font-headline italic text-xl sm:text-2xl lg:text-3xl text-parchment/80 leading-relaxed drop-shadow-2xl flex flex-wrap justify-center gap-x-2 perspective-1000">
+                    {video.message.split(' ').map((word, wIdx) => (
+                      <span key={wIdx} className="msg-word inline-block opacity-0">
+                        {word}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+          
+          <div className="flex-shrink-0 w-[40vw] flex flex-col items-center justify-center text-center px-10">
+            <div className="w-16 h-[1px] bg-rose/20 mb-12" />
+            <p className="font-body text-parchment/30 text-base italic leading-relaxed max-w-xs">
+              "Wait for the one who speaks your language without saying a single word."
+            </p>
+            <img 
+              src="/stck/stck5.jpg" 
+              alt="Pliss Sticker" 
+              className="w-20 h-auto mt-8 mix-blend-screen opacity-40 hover:opacity-80 transition-opacity grayscale hover:grayscale-0 duration-700 animate-sticker-wobble"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+

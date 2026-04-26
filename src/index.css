@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Noto+Serif:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+.font-harini {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* === SMOOTH SCROLL LENIS-LIKE FEEL === */
+:root {
+  --parchment: #faf6ef;
+  --parchment-dim: #f2eadb;
+  --ink: #14100d;
+  --ink-deep: #0a0807;
+  --rose: #b86b77;
+  --rose-gold: #c4b89a;
+  --gold-accent: #e9c176;
+  --on-surface: #2d3436;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+/* === VINTAGE OVERLAY === */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body {
+  font-family: 'Noto Serif', serif;
+  background: var(--parchment);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+}
+
+a, button, input, textarea, select, [role="button"] {
+  cursor: none;
+}
+
+/* === GLOBAL SMOOTH TRANSITIONS === */
+
+/* Parchment paper grain texture overlay */
+.parchment-texture {
+  position: relative;
+}
+
+.parchment-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ink stroke divider */
+.ink-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #11181C40, #11181C80, #11181C40, transparent);
+}
+
+/* Gold accent divider */
+.gold-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #8e7cc340, #8e7cc380, #8e7cc340, transparent);
+}
+
+/* Wax seal decoration */
+.wax-seal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #d4cce3, #8e7cc3 60%, #674ea7);
+  box-shadow: 
+    inset 0 2px 6px rgba(255,255,255,0.15),
+    inset 0 -3px 6px rgba(0,0,0,0.2),
+    0 4px 12px rgba(17, 24, 28, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.6s ease;
+}
+
+.wax-seal:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 
+    inset 0 2px 6px rgba(255,255,255,0.15),
+    inset 0 -3px 6px rgba(0,0,0,0.2),
+    0 8px 24px rgba(17, 24, 28, 0.25);
+}
+
+.wax-seal::after {
+  content: '♥';
+  font-size: 24px;
+  color: rgba(224, 237, 226, 0.8);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Deckle edge effect */
+.deckle-edge {
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 Q 10 8 20 0 Q 30 8 40 0 Q 50 8 60 0 Q 70 8 80 0 Q 90 8 100 0 Q 110 8 120 0 Q 130 8 140 0 Q 150 8 160 0 Q 170 8 180 0 Q 190 8 200 0 Q 210 8 220 0 Q 230 8 240 0 Q 250 8 260 0 Q 270 8 280 0 Q 290 8 300 0 Q 310 8 320 0 Q 330 8 340 0 Q 350 8 360 0 Q 370 8 380 0 Q 390 8 400 0 Q 410 8 420 0 Q 430 8 440 0 Q 450 8 460 0 Q 470 8 480 0 Q 490 8 500 0 Q 510 8 520 0 Q 530 8 540 0 Q 550 8 560 0 Q 570 8 580 0 Q 590 8 600 0 L 600 16 L 0 16 Z' fill='white'/%3E%3C/svg%3E");
+  mask-size: 100% 16px;
+  mask-position: bottom;
+  mask-repeat: repeat-x;
+  padding-bottom: 16px;
+}
+
+/* Fleuron ornament (CSS only) */
+.fleuron::before {
+  content: '❧';
+  font-size: 1.5em;
+  color: #8e7cc3;
+  display: block;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Vintage card hover */
+.vintage-card {
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: #ebf3ed;
+  border: 1px solid rgba(17, 24, 28, 0.08);
+}
+
+.vintage-card:hover {
+  background: #cbe3d2;
+  box-shadow: 0 8px 24px rgba(17, 24, 28, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Gold corner ornaments */
+.gold-corners {
+  position: relative;
+}
+
+.gold-corners::before,
+.gold-corners::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: #8e7cc3;
+  border-style: solid;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gold-corners:hover::before,
+.gold-corners:hover::after {
+  width: 50px;
+  height: 50px;
+}
+
+.gold-corners::before {
+  top: 0;
+  left: 0;
+  border-width: 2px 0 0 2px;
+}
+
+.gold-corners::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 2px 2px 0;
+}
+
+/* === SMOOTH REVEAL ANIMATION BASE CLASSES === */
+/* === SCROLL PROGRESS BAR === */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #8e7cc3, #b86b77);
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+  z-index: 10000;
+}
+
+/* === ENHANCED REVEAL CLASSES === */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+/* === TEXT HIGHLIGHT ANIMATION === */
+.text-highlight {
+  position: relative;
+  display: inline-block;
+  color: #8e7cc3;
+  font-style: italic;
+}
+
+.text-highlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
+  height: 8px;
+  background: rgba(142, 124, 195, 0.15);
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.revealed .text-highlight::after {
+  transform: scaleX(1);
+}
+
+/* === SMOOTH IMAGE HOVER === */
+.img-reveal-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.img-reveal-wrapper img, 
+.img-reveal-wrapper video {
+  transition: transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.img-reveal-wrapper:hover img,
+.img-reveal-wrapper:hover video {
+  transform: scale(1.1);
+}
+
+/* === LENIS SMOOTHING === */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+@keyframes sticker-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+
+@keyframes sticker-wobble {
+  0%, 100% { transform: scale(1) rotate(0); }
+  25% { transform: scale(1.05) rotate(-3deg); }
+  75% { transform: scale(1.05) rotate(3deg); }
+}
+
+.animate-sticker-float {
+  animation: sticker-float 4s ease-in-out infinite;
+}
+
+.animate-sticker-wobble {
+  animation: sticker-wobble 3s ease-in-out infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+.animate-fall {
+  animation: fall linear infinite;
+}
