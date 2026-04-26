@@ -10,6 +10,7 @@ import { LetterSection } from './components/LetterSection'
 import { PromisesSection } from './components/PromisesSection'
 import { ClosingSection } from './components/ClosingSection'
 import { CustomCursor } from './components/CustomCursor'
+import { Analytics } from '@vercel/analytics/react'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -142,6 +143,7 @@ function App() {
 
   return (
     <div className="w-full bg-parchment font-body text-on-surface relative">
+      <Analytics />
       <CustomCursor />
       
       {/* Scroll Progress Bar */}
