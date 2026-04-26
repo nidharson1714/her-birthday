@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://her-birthday-six-alpha.vercel.app/sitemap.xml
