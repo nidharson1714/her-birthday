@@ -178,50 +178,60 @@ export function KDramaSection() {
 
   }, { scope: containerRef })
 
-  // ── MOBILE VERTICAL REVEALS ──
+  // ── MOBILE STACKING CARDS LOGIC ──
   useGSAP(() => {
-    if (window.innerWidth >= 768) return;
+    if (window.innerWidth >= 1024) return; // Use LG breakpoint for mobile logic
 
     const mobileCards = gsap.utils.toArray<HTMLElement>('.mobile-video-card');
     
     mobileCards.forEach((card, i) => {
       const video = card.querySelector('video');
-      const msgWords = card.querySelectorAll('.msg-word-mobile');
+      const content = card.querySelector('.mobile-card-content');
 
-      ScrollTrigger.create({
-        trigger: card,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        onEnter: () => {
-          if (video) {
-            video.muted = false;
-            video.play().catch(() => {});
+      gsap.fromTo(card, 
+        { y: '50%', opacity: 0, scale: 0.8 },
+        {
+          y: '0%',
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+            end: 'top 20%',
+            scrub: true,
+            onEnter: () => {
+              if (video) {
+                video.muted = false;
+                video.play().catch(() => {});
+              }
+            },
+            onLeaveBack: () => {
+              if (video) {
+                video.muted = true;
+                video.pause();
+              }
+            }
           }
-          gsap.to(card, { scale: 1, opacity: 1, duration: 1, ease: 'power3.out' });
-          gsap.to(msgWords, { opacity: 1, stagger: 0.05, duration: 1, ease: 'power2.out' });
-        },
-        onLeave: () => {
-          if (video) {
-            video.muted = true;
-            video.pause();
-          }
-          gsap.to(card, { scale: 0.9, opacity: 0.3, duration: 1 });
-        },
-        onEnterBack: () => {
-          if (video) {
-            video.muted = false;
-            video.play().catch(() => {});
-          }
-          gsap.to(card, { scale: 1, opacity: 1, duration: 1, ease: 'power3.out' });
-        },
-        onLeaveBack: () => {
-          if (video) {
-            video.muted = true;
-            video.pause();
-          }
-          gsap.to(card, { scale: 0.9, opacity: 0.3, duration: 1 });
         }
-      });
+      );
+
+      if (content) {
+        gsap.fromTo(content,
+          { y: 30, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 60%',
+              toggleActions: 'play none none reverse'
+            }
+          }
+        );
+      }
     });
   }, { scope: containerRef });
 
@@ -259,7 +269,7 @@ export function KDramaSection() {
       </div>
 
       {/* ── DESKTOP HORIZONTAL SCROLL ── */}
-      <div className="hidden md:flex relative w-full h-screen items-center">
+      <div className="hidden lg:flex relative w-full h-screen items-center">
         <div 
           ref={horizontalRef}
           className="flex flex-nowrap items-center h-full px-[35vw] will-change-transform transform-gpu"
@@ -301,24 +311,22 @@ export function KDramaSection() {
         </div>
       </div>
 
-      {/* ── MOBILE VERTICAL LIST ── */}
-      <div className="md:hidden flex flex-col gap-32 w-full px-6 pb-40">
+      {/* ── MOBILE STACKING LIST ── */}
+      <div className="lg:hidden flex flex-col gap-40 w-full px-6 pb-60">
         {videos.map((video, idx) => (
-          <div key={video.id} className="mobile-video-card flex flex-col gap-6 opacity-30 scale-95 transform-gpu transition-all duration-700">
-            <div className="relative overflow-hidden rounded-[2rem] bg-black/40 border border-white/5 shadow-2xl">
+          <div key={video.id} className="mobile-video-card flex flex-col gap-8 opacity-0 transform-gpu">
+            <div className="relative overflow-hidden rounded-[2.5rem] bg-black/40 border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
               <video 
                 src={video.src}
                 className="w-full aspect-video object-cover"
                 autoPlay muted loop playsInline
               />
-              <div className="absolute top-4 left-5 font-label text-[8px] tracking-[0.3em] uppercase text-white/30">Scene 0{idx + 1}</div>
+              <div className="absolute top-5 left-6 font-label text-[10px] tracking-[0.3em] uppercase text-white/50 bg-black/40 px-3 py-1 rounded-full backdrop-blur-md">Scene 0{idx + 1}</div>
             </div>
             {video.message && (
-              <div className="text-center">
-                <p className="font-headline italic text-xl text-parchment/70 leading-relaxed flex flex-wrap justify-center gap-x-1.5">
-                   {video.message.split(' ').map((word, wIdx) => (
-                     <span key={wIdx} className="msg-word-mobile inline-block opacity-0">{word}</span>
-                   ))}
+              <div className="mobile-card-content text-center px-4">
+                <p className="font-headline italic text-2xl text-parchment leading-relaxed drop-shadow-lg">
+                   {video.message}
                 </p>
               </div>
             )}
