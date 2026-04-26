@@ -66,12 +66,12 @@ export function KDramaSection() {
         trigger: containerRef.current,
         pin: true,
         scrub: 1.5,
-        snap: undefined,
         start: 'top top',
-        end: () => `+=${getScrollAmount() + 1000}`,
+        end: () => `+=${getScrollAmount() + 1000}`, // Dynamic end
         invalidateOnRefresh: true,
         onEnter: () => {
           window.dispatchEvent(new CustomEvent('pause-bgm'))
+          // Force a refresh to ensure scrollWidth is correct
           ScrollTrigger.refresh()
         },
         onEnterBack: () => window.dispatchEvent(new CustomEvent('pause-bgm')),
@@ -193,7 +193,7 @@ export function KDramaSection() {
     <section 
       ref={containerRef} 
       onMouseMove={onMouseMove}
-      className="relative z-20 w-full min-h-screen bg-[#050a0a] overflow-hidden flex flex-col items-center"
+      className="relative z-20 w-full h-screen bg-[#050a0a] overflow-hidden flex flex-col justify-center"
     >
       <div className="absolute inset-0 pointer-events-none bg-radial-gradient from-teal-950/10 to-black" />
 
@@ -206,34 +206,47 @@ export function KDramaSection() {
         </h2>
       </div>
 
-      <div className="relative w-full h-screen flex items-center">
+      <div className="relative w-full h-[75vh] flex items-center">
         <div 
           ref={horizontalRef}
-          className="flex flex-nowrap items-center h-full px-[35vw] will-change-transform transform-gpu"
+          className="flex flex-nowrap items-center h-full px-[20vw] md:px-[35vw] will-change-transform transform-gpu"
         >
           {videos.map((video, idx) => (
             <div 
               key={video.id} 
-              className="video-card flex-shrink-0 w-[50vw] px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
+              className="video-card flex-shrink-0 w-[85vw] sm:w-[65vw] lg:w-[50vw] px-4 sm:px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
             >
-              <div className="video-card-inner relative group overflow-hidden rounded-[3rem] bg-black/60 shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30 transform-gpu">
+              <div className="video-card-inner relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30 transform-gpu">
+                
+                {/* Video */}
                 <video 
                   ref={el => videoRefs.current[idx] = el}
                   src={video.src}
-                  className="w-full aspect-video object-cover"
-                  autoPlay muted loop playsInline
+                  className="w-full aspect-video object-cover opacity-100 group-hover:opacity-100 transition-opacity duration-1000"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                 />
-                <div className="absolute top-8 left-10 font-label text-[10px] tracking-[0.4em] uppercase text-white/40">Scene 0{idx + 1}</div>
-                <div className="visualizer opacity-0 scale-50 absolute bottom-8 right-10 flex gap-1.5 items-end h-6">
-                  <div className="w-1.5 h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
-                  <div className="w-1.5 h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-1.5 h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
+                
+                {/* Glass Shimmer Overlay */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[2000ms] ease-in-out" />
+
+                <div className="absolute top-6 left-6 sm:top-8 sm:left-10 font-label text-[9px] sm:text-[10px] tracking-[0.4em] uppercase text-white/40 drop-shadow-md">
+                  Scene 0{idx + 1}
+                </div>
+ 
+                <div className="visualizer opacity-0 scale-50 absolute bottom-6 right-6 sm:bottom-8 sm:right-10 flex gap-1 sm:gap-1.5 items-end h-4 sm:h-6">
+                  <div className="w-1 h-3 sm:w-1.5 sm:h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
+                  <div className="w-1 h-4 sm:w-1.5 sm:h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="w-1 h-2 sm:w-1.5 sm:h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
                 </div>
               </div>
 
-              <div className="absolute top-full left-0 right-0 mt-6 text-center px-12 pointer-events-none">
+              {/* Message */}
+              <div className="absolute top-full left-0 right-0 mt-4 sm:mt-6 text-center px-4 sm:px-12 pointer-events-none">
                 {video.message && (
-                  <div className="font-headline italic text-2xl lg:text-3xl text-parchment/80 leading-relaxed flex flex-wrap justify-center gap-x-2">
+                  <div className="font-headline italic text-lg sm:text-2xl lg:text-3xl text-parchment/80 leading-relaxed drop-shadow-2xl flex flex-wrap justify-center gap-x-2 perspective-1000">
                     {video.message.split(' ').map((word, wIdx) => (
                       <span key={wIdx} className="msg-word inline-block opacity-0">
                         {word}
@@ -245,11 +258,16 @@ export function KDramaSection() {
             </div>
           ))}
           
-          <div className="flex-shrink-0 w-[50vw] flex flex-col items-center justify-center text-center px-10">
+          <div className="flex-shrink-0 w-[40vw] flex flex-col items-center justify-center text-center px-10">
             <div className="w-16 h-[1px] bg-rose/20 mb-12" />
             <p className="font-body text-parchment/30 text-base italic leading-relaxed max-w-xs">
               "Wait for the one who speaks your language without saying a single word."
             </p>
+            <img 
+              src="/stck/stck5.jpg" 
+              alt="Pliss Sticker" 
+              className="w-20 h-auto mt-8 mix-blend-screen opacity-40 hover:opacity-80 transition-opacity grayscale hover:grayscale-0 duration-700 animate-sticker-wobble"
+            />
           </div>
         </div>
       </div>
