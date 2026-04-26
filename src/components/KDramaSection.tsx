@@ -178,8 +178,6 @@ export function KDramaSection() {
 
   }, { scope: containerRef })
 
-  }, { scope: containerRef })
-
   // ── Mouse Parallax Detail ──
   const onMouseMove = (e: React.MouseEvent) => {
      if (!containerRef.current) return;
