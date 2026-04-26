@@ -155,7 +155,7 @@ export function ProfileSection() {
   return (
     <section
       ref={containerRef}
-      className="py-32 px-6 bg-parchment relative z-20 w-full parchment-texture"
+      className="py-16 sm:py-32 px-4 sm:px-6 bg-parchment relative z-20 w-full parchment-texture"
       id="profile"
     >
       <div className="max-w-[75rem] mx-auto">
@@ -169,7 +169,7 @@ export function ProfileSection() {
           />
         </div>
 
-        <h2 className="font-headline text-4xl sm:text-6xl mb-20 text-center text-ink italic overflow-hidden">
+        <h2 className="font-headline text-3xl sm:text-6xl mb-12 sm:mb-20 text-center text-ink italic overflow-hidden">
           <span className="profile-title-word inline-block">Everything</span>{' '}
           <span className="profile-title-word inline-block text-rose">She Is</span>
         </h2>
@@ -242,10 +242,10 @@ export function ProfileSection() {
           </div>
 
           {/* Mobile/Tablet Fallback Grid - Inline Images */}
-          <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12">
+          <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
             {profiles.map((p, i) => (
-              <div key={i} className="flex flex-col gap-4 p-6 bg-parchment-dim rounded-lg border border-ink/5">
-                <div className="aspect-video w-full overflow-hidden rounded-md bg-black/5">
+              <div key={i} className="flex flex-col gap-3 p-4 bg-parchment-dim rounded-lg border border-ink/5 shadow-sm">
+                <div className="aspect-[4/3] w-full overflow-hidden rounded-md bg-black/5">
                    {p.video ? (
                       <video 
                         autoPlay 
@@ -262,9 +262,9 @@ export function ProfileSection() {
                    )}
                 </div>
                 <div>
-                   <h3 className="font-headline text-2xl italic text-ink">{p.value}</h3>
-                   <p className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant">{p.label}</p>
-                   <p className="font-body text-sm italic text-on-surface-variant mt-2">{p.sub}</p>
+                   <h3 className="font-headline text-xl italic text-ink">{p.value}</h3>
+                   <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">{p.label}</p>
+                   <p className="font-body text-xs italic text-on-surface-variant mt-1.5 leading-relaxed">{p.sub}</p>
                 </div>
               </div>
             ))}
@@ -272,42 +272,42 @@ export function ProfileSection() {
         </div>
 
         {/* Ink divider */}
-        <div className="ink-divider my-20" />
+        <div className="ink-divider my-12 sm:my-20" />
 
         {/* Height Row */}
-        <div className="height-row flex flex-col sm:flex-row items-center sm:items-end justify-center gap-12 sm:gap-24">
-          <div className="height-col flex flex-col items-center gap-4">
-            <div className="w-[1px] h-[78px] bg-ink relative">
+        <div className="height-row flex flex-col sm:flex-row items-center sm:items-end justify-center gap-10 sm:gap-24">
+          <div className="height-col flex flex-col items-center gap-3 sm:gap-4">
+            <div className="w-[1px] h-[60px] sm:h-[78px] bg-ink relative">
               <div className="absolute -top-1 -left-1 w-2 h-2 rounded-full bg-rose" />
             </div>
             <div className="text-center">
-              <div className="font-headline text-xl text-ink italic">Harini</div>
-              <div className="font-label text-xs text-on-surface-variant uppercase tracking-widest mt-1">160 cm</div>
+              <div className="font-headline text-lg sm:text-xl text-ink italic">Harini</div>
+              <div className="font-label text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-widest mt-1">160 cm</div>
             </div>
           </div>
 
-          <div className="height-col flex flex-col items-center gap-4">
-            <div className="w-[1px] h-[97px] bg-ink-deep relative">
+          <div className="height-col flex flex-col items-center gap-3 sm:gap-4">
+            <div className="w-[1px] h-[80px] sm:h-[97px] bg-ink-deep relative">
               <div className="absolute -top-1 -left-1 w-2 h-2 rounded-full border border-ink bg-parchment" />
             </div>
             <div className="text-center">
-              <div className="font-headline text-xl text-ink italic">Nidharson</div>
-              <div className="font-label text-xs text-on-surface-variant uppercase tracking-widest mt-1">180 cm</div>
+              <div className="font-headline text-lg sm:text-xl text-ink italic">Nidharson</div>
+              <div className="font-label text-[10px] sm:text-xs text-on-surface-variant uppercase tracking-widest mt-1">180 cm</div>
             </div>
           </div>
 
-          <div className="height-col sm:max-w-[400px] flex flex-col md:flex-row items-center gap-8 border-t sm:border-t-0 sm:border-l border-gold-accent/30 pt-10 sm:pt-0 sm:pl-10">
+          <div className="height-col w-full sm:max-w-[400px] flex flex-col md:flex-row items-center gap-6 sm:gap-8 border-t sm:border-t-0 sm:border-l border-gold-accent/30 pt-10 sm:pt-0 sm:pl-10">
             <div className="relative group">
               <img 
                 src="/images/heart-image.jpg" 
                 alt="Memory" 
-                className="w-32 h-40 object-cover rounded-sm rotate-[-3deg] group-hover:rotate-0 transition-transform duration-700 shadow-xl border-[6px] border-white"
+                className="w-28 h-36 sm:w-32 sm:h-40 object-cover rounded-sm rotate-[-3deg] group-hover:rotate-0 transition-transform duration-700 shadow-xl border-[6px] border-white"
               />
-              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-white shadow-md flex items-center justify-center rotate-3">
-                <span className="text-rose text-xs">💜</span>
+              <div className="absolute -bottom-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 bg-white shadow-md flex items-center justify-center rotate-3">
+                <span className="text-rose text-[10px] sm:text-xs">💜</span>
               </div>
             </div>
-            <p className="font-body text-base text-on-surface-variant leading-relaxed italic">
+            <p className="font-body text-sm sm:text-base text-on-surface-variant leading-relaxed italic text-center sm:text-left">
               Twenty centimetres.<br />
               She rests precisely where my heart is.<br />
               I think that was always the point.

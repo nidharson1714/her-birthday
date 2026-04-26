@@ -210,7 +210,7 @@ export function LetterSection() {
           />
         </div>
 
-        <div className="relative envelope-container scale-[0.8] sm:scale-100 transform-gpu" style={{ width: '340px', height: '240px', perspective: '1200px' }}>
+        <div className="relative envelope-container scale-[0.7] sm:scale-100 transform-gpu" style={{ width: '300px', smWidth: '340px', height: '220px', smHeight: '240px', perspective: '1200px' }}>
           {/* 1. Envelope Back */}
           <div className="absolute inset-0 bg-[#5d4037] rounded-[4px] shadow-[0_40px_100px_rgba(0,0,0,0.8)]" />
 
@@ -261,7 +261,7 @@ export function LetterSection() {
         {/* Header */}
         <div className="text-center mb-32">
           <p className="font-label text-[11px] tracking-[0.5em] uppercase text-rose/60 mb-6">Written for</p>
-          <h2 className="font-harini text-6xl sm:text-9xl text-parchment italic tracking-tighter">Harini.</h2>
+          <h2 className="font-harini text-5xl sm:text-9xl text-parchment italic tracking-tighter">Harini.</h2>
         </div>
 
         {/* Vertical Stack */}
@@ -269,7 +269,7 @@ export function LetterSection() {
           {letters.map((l) => (
             <div 
               key={l.id}
-              className="letter-card relative max-w-[760px] w-full bg-[#faf6ef] shadow-[0_40px_120px_rgba(0,0,0,0.6)] overflow-hidden p-8 sm:p-16 md:p-24"
+              className="letter-card relative max-w-[760px] w-full bg-[#faf6ef] shadow-[0_40px_120px_rgba(0,0,0,0.6)] overflow-hidden p-6 sm:p-16 md:p-24"
               style={{ 
                 borderRadius: '2px',
               }}
@@ -278,7 +278,7 @@ export function LetterSection() {
               <div className="absolute inset-0 pointer-events-none opacity-[0.08]" style={{
                 background: 'repeating-linear-gradient(to bottom, transparent 0, transparent 33px, #14100d 33px, #14100d 34px)'
               }} />
-              <div className="absolute top-0 left-[80px] bottom-0 w-[1px] bg-[#7a2e2e]/15 pointer-events-none" />
+              <div className="absolute top-0 left-[40px] sm:left-[80px] bottom-0 w-[1px] bg-[#7a2e2e]/15 pointer-events-none" />
 
               <div className="flex justify-between items-baseline mb-12 relative z-10">
                 <div className="flex flex-col gap-1">
@@ -292,16 +292,16 @@ export function LetterSection() {
                 <span className="font-label text-[10px] tracking-[0.3em] uppercase text-[#7a2e2e] opacity-80">{l.tag}</span>
               </div>
 
-              <h3 className="font-headline text-4xl font-bold text-[#14100d] leading-tight mb-2 relative z-10">
+              <h3 className="font-headline text-2xl sm:text-4xl font-bold text-[#14100d] leading-tight mb-2 relative z-10">
                 {l.title}
               </h3>
-              <p className="font-headline italic text-lg text-[#7a6a5c] mb-12 relative z-10">
+              <p className="font-headline italic text-base sm:text-lg text-[#7a6a5c] mb-8 sm:mb-12 relative z-10">
                 {l.sub}
               </p>
 
               <div className="w-full h-[1px] bg-[#dfd4c0] mb-12 relative z-10" />
 
-              <div className="font-headline text-[1.25rem] leading-[2.2] text-[#3d3028] space-y-8 relative z-10 italic">
+              <div className="font-headline text-lg sm:text-[1.25rem] leading-[1.8] sm:leading-[2.2] text-[#3d3028] space-y-6 sm:space-y-8 relative z-10 italic">
                 {l.content}
               </div>
 

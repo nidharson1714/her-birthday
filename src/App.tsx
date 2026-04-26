@@ -153,7 +153,7 @@ function App() {
       {/* Mute Button */}
       <button 
         onClick={toggleMute}
-        className="fixed bottom-8 right-8 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center z-[1000] shadow-lg hover:scale-110 transition-transform duration-300"
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-white text-black rounded-full flex items-center justify-center z-[1000] shadow-lg hover:scale-110 transition-transform duration-300"
       >
         {isMuted ? (
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>

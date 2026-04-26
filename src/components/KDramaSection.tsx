@@ -195,11 +195,11 @@ export function KDramaSection() {
     >
       <div className="absolute inset-0 pointer-events-none bg-radial-gradient from-teal-950/10 to-black" />
 
-      <div className="kdrama-header-content text-center px-6 absolute top-12 left-0 right-0 z-20">
-        <span className="font-label text-[10px] tracking-[0.5em] uppercase text-rose/40 mb-3 block">
+      <div className="kdrama-header-content text-center px-6 absolute top-8 sm:top-12 left-0 right-0 z-20">
+        <span className="font-label text-[9px] sm:text-[10px] tracking-[0.4em] sm:tracking-[0.5em] uppercase text-rose/40 mb-2 sm:mb-3 block">
           A Recommendation That Changed Things
         </span>
-        <h2 className="font-headline text-4xl sm:text-6xl text-parchment italic tracking-tight">
+        <h2 className="font-headline text-3xl sm:text-6xl text-parchment italic tracking-tight">
           The <span className="text-rose">Unspoken</span> Language
         </h2>
       </div>
@@ -212,9 +212,9 @@ export function KDramaSection() {
           {videos.map((video, idx) => (
             <div 
               key={video.id} 
-              className="video-card flex-shrink-0 w-[85vw] sm:w-[65vw] lg:w-[50vw] px-12 opacity-20 relative perspective-2000"
+              className="video-card flex-shrink-0 w-[90vw] sm:w-[65vw] lg:w-[50vw] px-4 sm:px-12 opacity-20 relative perspective-2000"
             >
-              <div className="video-card-inner relative group overflow-hidden rounded-[3rem] bg-black/60 shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30">
+              <div className="video-card-inner relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30">
                 
                 {/* Video */}
                 <video 
@@ -230,21 +230,21 @@ export function KDramaSection() {
                 {/* Glass Shimmer Overlay */}
                 <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-[2000ms] ease-in-out" />
 
-                <div className="absolute top-8 left-10 font-label text-[10px] tracking-[0.4em] uppercase text-white/40 drop-shadow-md">
+                <div className="absolute top-6 left-6 sm:top-8 sm:left-10 font-label text-[9px] sm:text-[10px] tracking-[0.4em] uppercase text-white/40 drop-shadow-md">
                   Scene 0{idx + 1}
                 </div>
-
-                <div className="visualizer opacity-0 scale-50 absolute bottom-8 right-10 flex gap-1.5 items-end h-6">
-                  <div className="w-1.5 h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
-                  <div className="w-1.5 h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-1.5 h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
+ 
+                <div className="visualizer opacity-0 scale-50 absolute bottom-6 right-6 sm:bottom-8 sm:right-10 flex gap-1 sm:gap-1.5 items-end h-4 sm:h-6">
+                  <div className="w-1 h-3 sm:w-1.5 sm:h-4 bg-rose/80 animate-bounce" style={{ animationDelay: '0s' }} />
+                  <div className="w-1 h-4 sm:w-1.5 sm:h-6 bg-rose/80 animate-bounce" style={{ animationDelay: '0.1s' }} />
+                  <div className="w-1 h-2 sm:w-1.5 sm:h-3 bg-rose/80 animate-bounce" style={{ animationDelay: '0.2s' }} />
                 </div>
               </div>
 
               {/* Message */}
-              <div className="absolute top-full left-0 right-0 mt-6 text-center px-12 pointer-events-none">
+              <div className="absolute top-full left-0 right-0 mt-4 sm:mt-6 text-center px-4 sm:px-12 pointer-events-none">
                 {video.message && (
-                  <div className="font-headline italic text-xl sm:text-2xl lg:text-3xl text-parchment/80 leading-relaxed drop-shadow-2xl flex flex-wrap justify-center gap-x-2 perspective-1000">
+                  <div className="font-headline italic text-lg sm:text-2xl lg:text-3xl text-parchment/80 leading-relaxed drop-shadow-2xl flex flex-wrap justify-center gap-x-2 perspective-1000">
                     {video.message.split(' ').map((word, wIdx) => (
                       <span key={wIdx} className="msg-word inline-block opacity-0">
                         {word}

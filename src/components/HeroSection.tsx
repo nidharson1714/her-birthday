@@ -81,9 +81,9 @@ export function HeroSection() {
   return (
     <div ref={containerRef} onMouseMove={onMouseMove} className="relative overflow-hidden bg-transparent">
       {/* Top Right Button */}
-      <div className="absolute top-10 right-10 z-20">
+      <div className="absolute top-6 right-6 sm:top-10 sm:right-10 z-20">
         <button
-          className="hero-btn font-label rounded-full px-10 py-4 text-[10px] tracking-[0.4em] uppercase hover:scale-[1.05] transition-all duration-700 active:scale-95 group relative"
+          className="hero-btn font-label rounded-full px-6 py-3 sm:px-10 sm:py-4 text-[9px] sm:text-[10px] tracking-[0.4em] uppercase hover:scale-[1.05] transition-all duration-700 active:scale-95 group relative"
           style={{
             backgroundColor: 'rgba(0,0,0,0.9)',
             color: '#FFFFFF',
@@ -102,14 +102,14 @@ export function HeroSection() {
         <div className="hero-title-container perspective-2000 transform-gpu">
           <h1
             ref={titleRef}
-            className="font-headline text-5xl sm:text-8xl md:text-9xl lg:text-[11rem] font-normal max-w-7xl italic leading-[0.9] tracking-tighter"
+            className="font-headline text-5xl sm:text-8xl md:text-9xl lg:text-[11rem] font-normal max-w-[90vw] sm:max-w-7xl italic leading-[1.1] sm:leading-[0.9] tracking-tighter"
             style={{
               color: '#1a1a1a',
             }}
           >
             <span className="hero-word inline-block">Welcome</span>
             <br />
-            <span className="hero-word hero-name inline-block mt-6" style={{ color: '#b86b77' }}>
+            <span className="hero-word hero-name inline-block mt-4 sm:mt-6" style={{ color: '#b86b77' }}>
               dear Harini.
             </span>
           </h1>
@@ -121,7 +121,7 @@ export function HeroSection() {
           <img 
             src="/stck/stck3.jpg" 
             alt="Sticker" 
-            className="absolute -bottom-10 -right-20 w-24 h-auto mix-blend-multiply opacity-60 hover:opacity-100 transition-opacity duration-700 rotate-12 animate-sticker-wobble"
+            className="absolute -bottom-8 -right-4 sm:-bottom-10 sm:-right-20 w-16 sm:w-24 h-auto mix-blend-multiply opacity-60 hover:opacity-100 transition-opacity duration-700 rotate-12 animate-sticker-wobble"
           />
         </div>
       </section>
