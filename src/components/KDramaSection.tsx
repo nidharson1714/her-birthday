@@ -68,9 +68,9 @@ export function KDramaSection() {
         scrub: 1.5,
         snap: window.innerWidth < 1024 ? {
           snapTo: 1 / (videos.length - 1),
-          duration: { min: 0.1, max: 0.3 },
+          duration: { min: 0.1, max: 0.2 },
           delay: 0,
-          ease: 'power2.inOut'
+          ease: 'power1.inOut'
         } : undefined,
         start: 'top top',
         end: () => `+=${getScrollAmount() + (window.innerWidth < 768 ? 600 : 1000)}`, // Reduced distance for mobile
@@ -214,12 +214,12 @@ export function KDramaSection() {
       <div className="relative w-full h-[85vh] flex items-center">
         <div 
           ref={horizontalRef}
-          className="flex flex-nowrap items-center h-full px-[10vw] sm:px-[35vw] gap-4 sm:gap-0 will-change-transform transform-gpu"
+          className="flex flex-nowrap items-center h-full px-[10vw] sm:px-[35vw] will-change-transform transform-gpu"
         >
           {videos.map((video, idx) => (
             <div 
               key={video.id} 
-              className="video-card flex-shrink-0 w-[80vw] sm:w-[50vw] px-2 sm:px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
+              className="video-card flex-shrink-0 w-[80vw] sm:w-[50vw] px-0 sm:px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
             >
               <div className="video-card-inner relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30 transform-gpu">
                 <video 
