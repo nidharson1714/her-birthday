@@ -97,7 +97,7 @@ export function ProfileSection() {
     return () => ctx.revert()
   }, { scope: containerRef })
 
-  // Portfolio hover effect — floating thumbnail
+  // Portfolio hover/scroll effect — floating thumbnail
   useEffect(() => {
     const projectsEl = projectsRef.current
     const thumbnailEl = thumbnailRef.current
@@ -106,30 +106,15 @@ export function ProfileSection() {
     const rows = gsap.utils.toArray<HTMLElement>('.profile-row', projectsEl)
     const thumbs = gsap.utils.toArray<HTMLElement>('.profile-thumb', thumbnailEl)
 
-    gsap.set(thumbnailEl, { scale: 0 })
+    // Initial state
+    gsap.set(thumbnailEl, { scale: 0, xPercent: -50, yPercent: -50 })
 
-    const xTo = gsap.quickTo(thumbnailEl, 'x', { duration: 0.3, ease: 'power3.out' })
-    const yTo = gsap.quickTo(thumbnailEl, 'y', { duration: 0.3, ease: 'power3.out' })
+    // Quick setters for smooth movement
+    const xTo = gsap.quickTo(thumbnailEl, 'x', { duration: 0.4, ease: 'power3.out' })
+    const yTo = gsap.quickTo(thumbnailEl, 'y', { duration: 0.4, ease: 'power3.out' })
 
-    const handleMouseMove = (e: MouseEvent) => {
-      xTo(e.clientX)
-      yTo(e.clientY)
-    }
-
-    const handleMouseLeave = () => {
-      gsap.to(thumbnailEl, {
-        scale: 0,
-        duration: 0.4,
-        ease: 'power2.inOut',
-        overwrite: 'auto',
-      })
-    }
-
-    projectsEl.addEventListener('mousemove', handleMouseMove)
-    projectsEl.addEventListener('mouseleave', handleMouseLeave)
-
-    rows.forEach((row, index) => {
-      row.addEventListener('mouseenter', () => {
+    const updateActiveIndex = (index: number, isEntering: boolean) => {
+      if (isEntering) {
         gsap.to(thumbnailEl, {
           scale: 1,
           rotate: (index % 2 === 0 ? 2 : -2),
@@ -143,10 +128,65 @@ export function ProfileSection() {
           ease: 'power3.out',
           overwrite: 'auto',
         })
+      } else {
+        // Only hide if it's the last one or something
+      }
+    }
+
+    // ── DESKTOP MOUSE LOGIC ──
+    const handleMouseMove = (e: MouseEvent) => {
+      if (window.innerWidth >= 768) {
+        xTo(e.clientX)
+        yTo(e.clientY)
+      }
+    }
+
+    const handleMouseLeave = () => {
+      if (window.innerWidth >= 768) {
+        gsap.to(thumbnailEl, {
+          scale: 0,
+          duration: 0.4,
+          ease: 'power2.inOut',
+          overwrite: 'auto',
+        })
+      }
+    }
+
+    // ── MOBILE SCROLL LOGIC ──
+    const mm = gsap.matchMedia()
+    
+    mm.add("(max-width: 767px)", () => {
+      // On mobile, the thumbnail stays centered horizontally and follows the active row vertically
+      gsap.set(thumbnailEl, { left: '50%', xPercent: -50, top: '50%', yPercent: -50, position: 'fixed' })
+      
+      rows.forEach((row, index) => {
+        ScrollTrigger.create({
+          trigger: row,
+          start: 'top center',
+          end: 'bottom center',
+          onEnter: () => updateActiveIndex(index, true),
+          onEnterBack: () => updateActiveIndex(index, true),
+          onLeave: () => {
+            if (index === rows.length - 1) gsap.to(thumbnailEl, { scale: 0, duration: 0.4 })
+          },
+          onLeaveBack: () => {
+            if (index === 0) gsap.to(thumbnailEl, { scale: 0, duration: 0.4 })
+          }
+        })
+      })
+    })
+
+    mm.add("(min-width: 768px)", () => {
+      projectsEl.addEventListener('mousemove', handleMouseMove)
+      projectsEl.addEventListener('mouseleave', handleMouseLeave)
+      
+      rows.forEach((row, index) => {
+        row.addEventListener('mouseenter', () => updateActiveIndex(index, true))
       })
     })
 
     return () => {
+      mm.revert()
       projectsEl.removeEventListener('mousemove', handleMouseMove)
       projectsEl.removeEventListener('mouseleave', handleMouseLeave)
     }
@@ -174,9 +214,9 @@ export function ProfileSection() {
           <span className="profile-title-word inline-block text-rose">She Is</span>
         </h2>
 
-        {/* === Portfolio Hover List === */}
+        {/* === Unified List for Desktop & Mobile === */}
         <div className="relative">
-          <div ref={projectsRef} className="profile-list hidden md:flex flex-col w-full">
+          <div ref={projectsRef} className="profile-list flex flex-col w-full">
             {profiles.map((p, i) => (
               <div
                 key={i}
@@ -189,19 +229,24 @@ export function ProfileSection() {
                     : {}),
                 }}
               >
-                {/* Value */}
-                <h3
-                  className="font-headline text-3xl sm:text-[3.5rem] font-medium text-ink-deep italic leading-tight"
-                  style={{ transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
-                >
-                  <span className="inline-block group-hover:-translate-x-3 group-hover:text-rose transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
-                    {p.value}
-                  </span>
-                </h3>
+                {/* Value & Sub (Mobile Friendly) */}
+                <div className="flex flex-col gap-2">
+                  <h3
+                    className="font-headline text-3xl sm:text-[3.5rem] font-medium text-ink-deep italic leading-tight"
+                    style={{ transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
+                  >
+                    <span className="inline-block group-hover:-translate-x-3 group-hover:text-rose transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
+                      {p.value}
+                    </span>
+                  </h3>
+                  <p className="font-body text-xs italic text-on-surface-variant md:hidden">
+                    {p.sub}
+                  </p>
+                </div>
 
                 {/* Label */}
                 <p
-                  className="font-label text-sm sm:text-base text-on-surface-variant tracking-wider uppercase"
+                  className="font-label text-sm sm:text-base text-on-surface-variant tracking-wider uppercase text-right"
                   style={{ transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' }}
                 >
                   <span className="inline-block group-hover:translate-x-3 group-hover:text-ink transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]">
@@ -212,10 +257,10 @@ export function ProfileSection() {
             ))}
           </div>
 
-          {/* Floating Thumbnail Container (Desktop Only) */}
+          {/* Floating Thumbnail Container */}
           <div
             ref={thumbnailRef}
-            className="fixed w-[22rem] h-[14rem] hidden md:flex flex-col overflow-hidden pointer-events-none top-0 left-0 z-50 rounded-sm"
+            className="fixed w-[18rem] h-[12rem] sm:w-[22rem] sm:h-[14rem] flex flex-col overflow-hidden pointer-events-none top-0 left-0 z-50 rounded-sm opacity-90 sm:opacity-100"
             style={{
               boxShadow: '0 20px 60px rgba(47, 79, 79, 0.25)',
               border: '2px solid rgba(233, 193, 118, 0.4)',
@@ -241,34 +286,7 @@ export function ProfileSection() {
             ))}
           </div>
 
-          {/* Mobile/Tablet Fallback Grid - Inline Images */}
-          <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-            {profiles.map((p, i) => (
-              <div key={i} className="flex flex-col gap-3 p-4 bg-parchment-dim rounded-lg border border-ink/5 shadow-sm">
-                <div className="aspect-[4/3] w-full overflow-hidden rounded-md bg-black/5">
-                   {p.video ? (
-                      <video 
-                        autoPlay 
-                        muted 
-                        loop 
-                        playsInline 
-                        poster={p.poster}
-                        className="w-full h-full object-cover"
-                      >
-                        <source src={p.video} type="video/mp4" />
-                      </video>
-                   ) : (
-                      <img src={p.image} alt={p.value} className="w-full h-full object-cover" />
-                   )}
-                </div>
-                <div>
-                   <h3 className="font-headline text-xl italic text-ink">{p.value}</h3>
-                   <p className="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">{p.label}</p>
-                   <p className="font-body text-xs italic text-on-surface-variant mt-1.5 leading-relaxed">{p.sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {/* Remove the old fallback grid */}
         </div>
 
         {/* Ink divider */}
