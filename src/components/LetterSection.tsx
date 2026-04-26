@@ -210,7 +210,7 @@ export function LetterSection() {
           />
         </div>
 
-        <div className="relative envelope-container scale-[0.7] sm:scale-100 transform-gpu" style={{ width: '300px', smWidth: '340px', height: '220px', smHeight: '240px', perspective: '1200px' }}>
+        <div className="relative envelope-container w-[300px] sm:w-[340px] h-[220px] sm:h-[240px] scale-[0.7] sm:scale-100 transform-gpu" style={{ perspective: '1200px' }}>
           {/* 1. Envelope Back */}
           <div className="absolute inset-0 bg-[#5d4037] rounded-[4px] shadow-[0_40px_100px_rgba(0,0,0,0.8)]" />
 
