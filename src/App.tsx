@@ -20,13 +20,13 @@ function App() {
   useLayoutEffect(() => {
     // ── INITIALIZE LENIS SMOOTH SCROLL (ULTRA SMOOTH SETTINGS) ──
     const lenis = new Lenis({
-      duration: 1.8,
+      duration: 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 0.9,
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
       infinite: false,
     })
 

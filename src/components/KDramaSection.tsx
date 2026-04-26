@@ -45,14 +45,16 @@ export function KDramaSection() {
       return horizontalRef.current.scrollWidth - window.innerWidth;
     }
 
-    // ── Floating/Levitation Animation for all cards ──
+    // ── Floating/Levitation Animation ──
+    // Only run on non-mobile or reduce intensity to save CPU
     cards.forEach((card, i) => {
        gsap.to(card, {
-          y: i % 2 === 0 ? -15 : 15,
+          y: i % 2 === 0 ? -10 : 10,
           duration: 3 + i * 0.5,
           repeat: -1,
           yoyo: true,
-          ease: 'sine.inOut'
+          ease: 'sine.inOut',
+          paused: window.innerWidth < 768 // Disable constant floating on mobile for better FPS
        })
     })
 
@@ -63,9 +65,9 @@ export function KDramaSection() {
       scrollTrigger: {
         trigger: containerRef.current,
         pin: true,
-        scrub: 1.5,
+        scrub: window.innerWidth < 768 ? 0.6 : 1.2, // Faster scrub on mobile for responsiveness
         start: 'top top',
-        end: () => `+=${getScrollAmount() + 1000}`, // Dynamic end
+        end: () => `+=${getScrollAmount() + (window.innerWidth < 768 ? 500 : 1000)}`, // Shorter scroll on mobile
         invalidateOnRefresh: true,
         onEnter: () => {
           window.dispatchEvent(new CustomEvent('pause-bgm'))
@@ -207,14 +209,14 @@ export function KDramaSection() {
       <div className="relative w-full h-[75vh] flex items-center">
         <div 
           ref={horizontalRef}
-          className="flex flex-nowrap items-center h-full px-[10vw] md:px-[35vw]"
+          className="flex flex-nowrap items-center h-full px-[20vw] md:px-[35vw] will-change-transform transform-gpu"
         >
           {videos.map((video, idx) => (
             <div 
               key={video.id} 
-              className="video-card flex-shrink-0 w-[90vw] sm:w-[65vw] lg:w-[50vw] px-4 sm:px-12 opacity-20 relative perspective-2000"
+              className="video-card flex-shrink-0 w-[85vw] sm:w-[65vw] lg:w-[50vw] px-4 sm:px-12 opacity-20 relative perspective-2000 will-change-transform transform-gpu"
             >
-              <div className="video-card-inner relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30">
+              <div className="video-card-inner relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-black/60 shadow-[0_20px_60px_rgba(0,0,0,0.8)] sm:shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10 transition-transform duration-1000 ease-out hover:border-rose/30 transform-gpu">
                 
                 {/* Video */}
                 <video 
